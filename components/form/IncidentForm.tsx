@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { FieldValues, UseFormReturn, FieldErrors } from "react-hook-form";
+import { FieldValues, UseFormReturn, FieldErrors, Path, PathValue } from "react-hook-form";
 import { useLoadScript, Autocomplete } from "@react-google-maps/api";
 import { config } from "@/lib/config";
 
@@ -57,10 +57,10 @@ export default function IncidentForm<V extends FieldValues>({
           lng >= NYC_BOUNDS.west &&
           lng <= NYC_BOUNDS.east
         ) {
-          form.setValue("latitude", lat);
-          form.setValue("longitude", lng);
+          form.setValue("latitude" as Path<V>, lat as PathValue<V, Path<V>>);
+          form.setValue("longitude" as Path<V>, lng as PathValue<V, Path<V>>);
         } else {
-          form.setError("address", {
+          form.setError("address" as Path<V>, {
             type: "manual",
             message: "Address must be within New York City",
           });
@@ -103,7 +103,7 @@ export default function IncidentForm<V extends FieldValues>({
           id="description"
           placeholder="Describe what happened"
           className="min-h-[100px]"
-          {...form.register("description")}
+          {...form.register("description" as Path<V>)}
         />
       </div>
 

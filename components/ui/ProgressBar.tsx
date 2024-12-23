@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
-export function ProgressBar() {
+function ProgressBarContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -21,4 +22,12 @@ export function ProgressBar() {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+export function ProgressBar() {
+  return (
+    <Suspense fallback={null}>
+      <ProgressBarContent />
+    </Suspense>
+  );
 }

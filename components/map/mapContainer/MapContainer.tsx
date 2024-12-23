@@ -62,7 +62,6 @@ export default function MapContainer({
   const {
     data: crimes,
     isFetching,
-    previousData,
   } = useQuery({
     queryKey: [
       "crimes",
@@ -88,8 +87,16 @@ export default function MapContainer({
     initialData: { crimes: [] },
   });
 
+  const previousData = useRef(crimes);
+
+  useEffect(() => {
+    if (!isFetching) {
+      previousData.current = crimes;
+    }
+  }, [crimes, isFetching]);
+
   const pins = useMemo(() => {
-    const currentData = isFetching ? previousData : crimes;
+    const currentData = isFetching ? previousData.current : crimes;
     const markers = currentData?.crimes?.map((crime) => (
       <Marker
         key={`marker-${crime.id}`}

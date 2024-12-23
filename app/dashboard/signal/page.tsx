@@ -47,7 +47,7 @@ export default function SignalIncident() {
     [toast]
   );
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: createIncident,
     onSuccess: () => {
       toast({
@@ -65,7 +65,11 @@ export default function SignalIncident() {
   });
 
   const onSubmit = (values: FormValues) => {
-    mutate(values);
+      mutate({
+          latitude: values.latitude,
+          longitude: values.longitude,
+          description: values.description,
+      });
   };
 
   return (
@@ -81,7 +85,7 @@ export default function SignalIncident() {
           form={form}
           onSubmit={onSubmit}
           onError={onError}
-          isLoading={isLoading}
+          isLoading={status === 'pending'}
         />
       </div>
       <Toaster />
